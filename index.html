@@ -1,105 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2/dist/break_infinity.js"></script>
+<script src="matterdims.js"></script>
 <script>
 var game_speed = 200
-var matter = 1
-var buymult = 2
-var m1count = 0
-var m1mult = 1
-var m1cost = 1
-var m1scaling = 1000
-var m2count = 0
-var m2mult = 0.5
-var m2cost = 10
-var m2scaling = 10000
-var m3count = 0
-var m3mult = 0.5
-var m3cost = 100
-var m3scaling = 100000
-var m4count = 0
-var m4mult = 0.5
-var m4cost = 1000000
-var m4scaling = 1000000
+var matter = new Decimal(1);
+var buymult = new Decimal(2);
+var m1count = new Decimal(0);
+var m1mult = new Decimal(1);
+var m1cost = new Decimal(1);
+var m1scaling = new Decimal(1000);
+var m2count = new Decimal(0);
+var m2mult = new Decimal(0.5);
+var m2cost = new Decimal(10);
+var m2scaling = new Decimal(10000);
+var m3count = new Decimal(0);
+var m3mult = new Decimal(0.5);
+var m3cost = new Decimal(100);
+var m3scaling = new Decimal(100000);
+var m4count = new Decimal(0);
+var m4mult = new Decimal(0.5);
+var m4cost = new Decimal(1000000);
+var m4scaling = new Decimal(1000000);
 
-function SimpleExp(num){
-    return(num.toExponential(2).replace('+', ''));
-}
+
+var tickspeedmult = new Decimal(1.1);
+var tickspeedupgrades = 0;
+var tickspeedscaling = new Decimal(10);
+var tickspeedcost = new Decimal(100);
+
+
+var m1 = new MatterDim(m1mult, m1cost, m1scaling);
+var m2 = new MatterDim(m2mult, m2cost, m2scaling);
+var m3 = new MatterDim(m3mult, m3cost, m3scaling);
+var m4 = new MatterDim(m4mult, m4cost, m4scaling);
+
 
 
 function Update() {
     if (matter > 100000){
-    document.getElementById('numbdisp').innerHTML = matter.toExponential(2).replace('+', '');}
+    document.getElementById('numbdisp').innerHTML = matter.toExponential(2).toString().replace('+', '');}
     else{
         document.getElementById('numbdisp').innerHTML = matter.toFixed(0);
     }
 
+    ts = CalcTickspeed()
 
-
-    if (m1cost <= 100000){
-    document.getElementById('m1').innerHTML = m1mult.toFixed(2) + "  1st Dimension:" + m1count.toFixed(0) + "        Cost:" + m1cost.toFixed(0);}
-    else{
-        if (m1mult <= 100){document.getElementById('m1').innerHTML = m1mult.toFixed(2) + "  1st Dimension:" + SimpleExp(m1count) + "        Cost:" + SimpleExp(m1cost);}
-        else{document.getElementById('m1').innerHTML = SimpleExp(m1mult) + "  1st Dimension:" + SimpleExp(m1count) + "        Cost:" + SimpleExp(m1cost);}
-    }
-    if (m2cost <= 100000){
-    document.getElementById('m2').innerHTML = m2mult.toFixed(2) + "  2nd Dimension:" + m2count.toFixed(0) + "        Cost:" + m2cost.toFixed(0);}
-    else{
-        if (m2mult <= 100){document.getElementById('m2').innerHTML = m2mult.toFixed(2) + "  2nd Dimension:" + SimpleExp(m2count) + "        Cost:" + SimpleExp(m2cost);}
-        else{document.getElementById('m2').innerHTML = SimpleExp(m2mult) + "  2nd Dimension:" + SimpleExp(m2count) + "        Cost:" + SimpleExp(m2cost);}
-    }
-    if (m3cost <= 100000){
-    document.getElementById('m3').innerHTML = m3mult.toFixed(2) + "  3rd Dimension:" + m3count.toFixed(0) + "        Cost:" + m3cost.toFixed(0);}
-    else{
-        if (m3mult <= 100){document.getElementById('m3').innerHTML = m3mult.toFixed(2) + "  3rd Dimension:" + SimpleExp(m3count) + "        Cost:" + SimpleExp(m3cost);}
-        else{document.getElementById('m3').innerHTML = SimpleExp(m3mult) + "  3rd Dimension:" + SimpleExp(m3count) + "        Cost:" + SimpleExp(m3cost);}
-    }
-    if (m4cost <= 100000){
-    document.getElementById('m4').innerHTML = m4mult.toFixed(2) + "  4th Dimension:" + m4count.toFixed(0) + "        Cost:" + m4cost.toFixed(0);}
-    else{
-        if (m3mult <= 100){document.getElementById('m4').innerHTML = m4mult.toFixed(2) + "  4th Dimension:" + SimpleExp(m4count) + "        Cost:" + SimpleExp(m4cost);}
-        else{document.getElementById('m4').innerHTML = SimpleExp(m4mult) + "  4th Dimension:" + SimpleExp(m4count) + "        Cost:" + SimpleExp(m4cost);}
+    document.getElementById('tickspeed').innerHTML  = 'Tickspeed: ' + ((ts < 100000) ? ts.toFixed(2) : ts.toExponential(2).toString().replace('+', '')) + ' Ticks per second           Cost: ' + ((tickspeedcost < 100000) ? tickspeedcost.toFixed(0) : tickspeedcost.toExponential(2).toString().replace('+', ''));
+    document.getElementById('m1').innerHTML = 'x'+((m1.mult < 100000) ? m1.mult.toFixed(1) : m1.mult.toExponential(2).toString().replace('+', '')) + ' 1st Matter Dimension: '+ ((m1.count < 100000) ? m1.count.toFixed(0) : m1.count.toExponential(2).toString().replace('+', '')) + '        Cost: '+((m1.cost < 100000) ? m1.cost.toFixed(0) : m1.cost.toExponential(2).toString().replace('+', '')) + ' Matter';
+    document.getElementById('m2').innerHTML = 'x'+((m2.mult < 100000) ? m2.mult.toFixed(1) : m2.mult.toExponential(2).toString().replace('+', '')) + ' 2nd Matter Dimension: '+ ((m2.count < 100000) ? m2.count.toFixed(0) : m2.count.toExponential(2).toString().replace('+', '')) + '        Cost: '+((m2.cost < 100000) ? m2.cost.toFixed(0) : m2.cost.toExponential(2).toString().replace('+', '')) + ' Matter';
+    document.getElementById('m3').innerHTML = 'x'+((m3.mult < 100000) ? m3.mult.toFixed(1) : m3.mult.toExponential(2).toString().replace('+', '')) + ' 3rd Matter Dimension: '+ ((m3.count < 100000) ? m3.count.toFixed(0) : m3.count.toExponential(2).toString().replace('+', '')) + '        Cost: '+((m3.cost < 100000) ? m3.cost.toFixed(0) : m3.cost.toExponential(2).toString().replace('+', '')) + ' Matter';
+    document.getElementById('m4').innerHTML = 'x'+((m4.mult < 100000) ? m4.mult.toFixed(1) : m4.mult.toExponential(2).toString().replace('+', '')) + ' 4th Matter Dimension: '+ ((m4.count < 100000) ? m4.count.toFixed(0) : m4.count.toExponential(2).toString().replace('+', '')) + '        Cost: '+((m4.cost < 100000) ? m4.cost.toFixed(0) : m4.cost.toExponential(2).toString().replace('+', '')) + ' Matter';
+}
+function Trypurchase(dim) {
+    if (matter >= dim.cost){
+        matter -= dim.cost;
+        dim.count += 1;
+        dim.mult *= buymult;
+        dim.cost *= dim.scaling
+    }}
+function UpgradeTickspeed(max = false){
+    if(matter >= tickspeedcost){
+        tickspeedupgrades += 1;
+        matter-= tickspeedcost;
+        tickspeedcost *= tickspeedscaling;
     }
     
-
-
+    
+        
 }
-function Trypurchase1() {
-    if (matter >= m1cost){
-        matter -= m1cost;
-        m1count += 1;
-        m1mult *= buymult;
-        m1cost *= m1scaling
-    }}
-function Trypurchase2() {
-    if (matter >= m2cost){
-        matter -= m2cost;
-        m2count += 1;
-        m2mult *= buymult;
-        m2cost *= m1scaling
-    }}
-function Trypurchase3() {
-    if (matter >= m3cost){
-        matter -= m3cost;
-        m3count += 1;
-        m3mult *= buymult;
-        m3cost *= m3scaling
-    }}
-function Trypurchase4() {
-    if (matter >= m4cost){
-        matter -= m4cost;
-        m4count += 1;
-        m4mult *= buymult;
-        m4cost *= m4scaling
-    }}
+
+function CalcTickspeed(){
+    if (tickspeedupgrades > 0){
+    return tickspeedmult.pow(tickspeedupgrades);}
+    else{
+        
+        return 1
+    }
+}
+
 window.onload = function() {     
        
      function tick() {
          Update();
-         matter += (m1count * m1mult)/(1000/game_speed);
-         m1count += (m2count * m2mult)/(1000/game_speed);
-         m2count += (m3count * m3mult)/(1000/game_speed);
-         m3count += (m4count * m4mult)/(1000/game_speed);
+         ts = CalcTickspeed()
+         if(m1.count.toString()!='0'){matter += ts * (m1.count * m1.mult)/(1000/game_speed);}
+         if(m2.count.toString()!='0'){m1.count += ts * (m2.count * m2.mult)/(1000/game_speed);}
+         if(m3.count.toString()!='0'){m2.count += ts * (m3.count * m3.mult)/(1000/game_speed);}
+         if(m4.count.toString()!='0'){m3.count += ts * (m4.count * m4.mult)/(1000/game_speed);}
          
      }
      setInterval(tick, game_speed);
@@ -111,11 +100,12 @@ window.onload = function() {
 <body>
     <title>Matter Dimensions</title>
     <h2 id="numbdisp" >0</h2>
-    <br>
-    <button id="m1" type="button" onclick="Trypurchase1()">1st Dimension: 0</button> <br>
-    <button id="m2"type="button" onclick="Trypurchase2()">2nd Dimension: 0</button> <br>
-    <button id="m3"type="button" onclick="Trypurchase3()">3rd Dimension: 0</button> <br>
-    <button id="m4"type="button" onclick="Trypurchase4()">asdfdfs Dimension: 0</button> 
+    <br><br>
+    <button id="tickspeed" type="button" onclick="UpgradeTickspeed()">1st Dimension: 0</button> <br><br>
+    <button id="m1" type="button" onclick="Trypurchase(m1)">1st Dimensasfsafion: 0</button> <br>
+    <button id="m2"type="button" onclick="Trypurchase(m2)">2nd Dimenfasfsion: 0</button> <br>
+    <button id="m3"type="button" onclick="Trypurchase(m3)">3rdfansion: 0</button> <br>
+    <button id="m4"type="button" onclick="Trypurchase(m4)">4thasdfaf</button> 
 
 </body>
 </html> 

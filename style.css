@@ -4,9 +4,28 @@ p {
 body {
     background-color: rgb(0, 0, 0);
 }
-button {
+.matdimbutton {
     font-size: larger;
+    width: 40%;
+    margin: auto;
+    position: relative;
+    left: 30%;
+    text-align: left;
+    
 }
+#tickspeed{background-color: rgb(67, 209, 166);}
+#tickspeed:hover{background-color: rgb(171, 209, 198);}
+#m1{background-color: rgb(221, 74, 74);}
+#m1:hover{background-color: rgb(231, 168, 168);}
+#m2{background-color: rgb(236, 167, 62);}
+#m2:hover{background-color: white;}
+#m3{background-color: rgb(247, 244, 114);}
+#m3:hover{background-color: white;}
+#m4{background-color: rgb(106, 196, 98);}
+#m4:hover{background-color: white;}
 #numbdisp {
     color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: xx-large;
+    margin: auto;
 }

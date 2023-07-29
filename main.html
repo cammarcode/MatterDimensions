@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+var game_speed = 200
+var matter = 1
+var buymult = 2
+var m1count = 0
+var m1mult = 1
+var m1cost = 1
+var m1scaling = 1000
+var m2count = 0
+var m2mult = 0.5
+var m2cost = 10
+var m2scaling = 10000
+var m3count = 0
+var m3mult = 0.5
+var m3cost = 100
+var m3scaling = 100000
+var m4count = 0
+var m4mult = 0.5
+var m4cost = 1000000
+var m4scaling = 1000000
+
+function SimpleExp(num){
+    return(num.toExponential(2).replace('+', ''));
+}
+
+
+function Update() {
+    if (matter > 100000){
+    document.getElementById('numbdisp').innerHTML = matter.toExponential(2).replace('+', '');}
+    else{
+        document.getElementById('numbdisp').innerHTML = matter.toFixed(0);
+    }
+
+
+
+    if (m1cost <= 100000){
+    document.getElementById('m1').innerHTML = m1mult.toFixed(2) + "  1st Dimension:" + m1count.toFixed(0) + "        Cost:" + m1cost.toFixed(0);}
+    else{
+        if (m1mult <= 100){document.getElementById('m1').innerHTML = m1mult.toFixed(2) + "  1st Dimension:" + SimpleExp(m1count) + "        Cost:" + SimpleExp(m1cost);}
+        else{document.getElementById('m1').innerHTML = SimpleExp(m1mult) + "  1st Dimension:" + SimpleExp(m1count) + "        Cost:" + SimpleExp(m1cost);}
+    }
+    if (m2cost <= 100000){
+    document.getElementById('m2').innerHTML = m2mult.toFixed(2) + "  2nd Dimension:" + m2count.toFixed(0) + "        Cost:" + m2cost.toFixed(0);}
+    else{
+        if (m2mult <= 100){document.getElementById('m2').innerHTML = m2mult.toFixed(2) + "  2nd Dimension:" + SimpleExp(m2count) + "        Cost:" + SimpleExp(m2cost);}
+        else{document.getElementById('m2').innerHTML = SimpleExp(m2mult) + "  2nd Dimension:" + SimpleExp(m2count) + "        Cost:" + SimpleExp(m2cost);}
+    }
+    if (m3cost <= 100000){
+    document.getElementById('m3').innerHTML = m3mult.toFixed(2) + "  3rd Dimension:" + m3count.toFixed(0) + "        Cost:" + m3cost.toFixed(0);}
+    else{
+        if (m3mult <= 100){document.getElementById('m3').innerHTML = m3mult.toFixed(2) + "  3rd Dimension:" + SimpleExp(m3count) + "        Cost:" + SimpleExp(m3cost);}
+        else{document.getElementById('m3').innerHTML = SimpleExp(m3mult) + "  3rd Dimension:" + SimpleExp(m3count) + "        Cost:" + SimpleExp(m3cost);}
+    }
+    if (m4cost <= 100000){
+    document.getElementById('m4').innerHTML = m4mult.toFixed(2) + "  4th Dimension:" + m4count.toFixed(0) + "        Cost:" + m4cost.toFixed(0);}
+    else{
+        if (m3mult <= 100){document.getElementById('m4').innerHTML = m4mult.toFixed(2) + "  4th Dimension:" + SimpleExp(m4count) + "        Cost:" + SimpleExp(m4cost);}
+        else{document.getElementById('m4').innerHTML = SimpleExp(m4mult) + "  4th Dimension:" + SimpleExp(m4count) + "        Cost:" + SimpleExp(m4cost);}
+    }
+    
+
+
+}
+function Trypurchase1() {
+    if (matter >= m1cost){
+        matter -= m1cost;
+        m1count += 1;
+        m1mult *= buymult;
+        m1cost *= m1scaling
+    }}
+function Trypurchase2() {
+    if (matter >= m2cost){
+        matter -= m2cost;
+        m2count += 1;
+        m2mult *= buymult;
+        m2cost *= m1scaling
+    }}
+function Trypurchase3() {
+    if (matter >= m3cost){
+        matter -= m3cost;
+        m3count += 1;
+        m3mult *= buymult;
+        m3cost *= m3scaling
+    }}
+function Trypurchase4() {
+    if (matter >= m4cost){
+        matter -= m4cost;
+        m4count += 1;
+        m4mult *= buymult;
+        m4cost *= m4scaling
+    }}
+window.onload = function() {     
+       
+     function tick() {
+         Update();
+         matter += (m1count * m1mult)/(1000/game_speed);
+         m1count += (m2count * m2mult)/(1000/game_speed);
+         m2count += (m3count * m3mult)/(1000/game_speed);
+         m3count += (m4count * m4mult)/(1000/game_speed);
+         
+     }
+     setInterval(tick, game_speed);
+ }
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <title>Matter Dimensions</title>
+    <h2 id="numbdisp" >0</h2>
+    <br>
+    <button id="m1" type="button" onclick="Trypurchase1()">1st Dimension: 0</button> <br>
+    <button id="m2"type="button" onclick="Trypurchase2()">2nd Dimension: 0</button> <br>
+    <button id="m3"type="button" onclick="Trypurchase3()">3rd Dimension: 0</button> <br>
+    <button id="m4"type="button" onclick="Trypurchase4()">asdfdfs Dimension: 0</button> 
+
+</body>
+</html> 

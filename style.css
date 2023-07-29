@@ -1,0 +1,12 @@
+p {
+    font-size: xx-large;
+}
+body {
+    background-color: rgb(0, 0, 0);
+}
+button {
+    font-size: larger;
+}
+#numbdisp {
+    color: rgb(255, 255, 255);
+}

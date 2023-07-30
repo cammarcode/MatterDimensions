@@ -39,7 +39,7 @@ var m4 = new MatterDim(m4mult, m4cost, m4scaling);
 
 
 function Update() {
-    if (matter > 100000){
+    if (matter > Decimal(100000)){
     document.getElementById('numbdisp').innerHTML = matter.toExponential(2).toString().replace('+', '');}
     else{
         document.getElementById('numbdisp').innerHTML = matter.toFixed(0);

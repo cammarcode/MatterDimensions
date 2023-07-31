@@ -5,24 +5,31 @@
 <script src="matterdims.js"></script>
 <script>
 var game_speed = 200
-var matter = new Decimal(1);
-var buymult = new Decimal(2);
-var m1count = new Decimal(0);
-var m1mult = new Decimal(1);
-var m1cost = new Decimal(1);
-var m1scaling = new Decimal(1000);
-var m2count = new Decimal(0);
-var m2mult = new Decimal(0.5);
-var m2cost = new Decimal(10);
-var m2scaling = new Decimal(10000);
-var m3count = new Decimal(0);
-var m3mult = new Decimal(0.5);
-var m3cost = new Decimal(100);
-var m3scaling = new Decimal(100000);
-var m4count = new Decimal(0);
-var m4mult = new Decimal(0.5);
-var m4cost = new Decimal(1000000);
-var m4scaling = new Decimal(1000000);
+var matter = new Decimal("1e+350");
+var buymult = new Decimal("2");
+var m1count = new Decimal("0");
+var m1mult = new Decimal("1");
+var m1cost = new Decimal("1");
+var m1scaling = new Decimal("1000");
+var m2count = new Decimal("0");
+var m2mult = new Decimal("0.5");
+var m2cost = new Decimal("10");
+var m2scaling = new Decimal("10000");
+var m3count = new Decimal("0");
+var m3mult = new Decimal("0.5");
+var m3cost = new Decimal("100");
+var m3scaling = new Decimal("100000");
+var m4count = new Decimal('0');
+var m4mult = new Decimal("0.5");
+var m4cost = new Decimal('1000000');
+var m4scaling = new Decimal('1000000');
+
+var test = new Decimal("1e+400")
+
+function Test(){
+    alert(test)
+}
+
 
 
 var tickspeedmult = new Decimal(1.1);
@@ -61,16 +68,16 @@ function Update() {
 }
 function Trypurchase(dim) {
     if (matter >= dim.cost){
-        matter -= dim.cost;
-        dim.count += 1;
+        matter = matter.minus(dim.cost);
+        dim.count = dim.count + 1;
         dim.mult *= buymult;
         dim.cost *= dim.scaling
     }}
 function UpgradeTickspeed(max = false){
     if(matter >= tickspeedcost){
         tickspeedupgrades += 1;
-        matter-= tickspeedcost;
-        tickspeedcost *= tickspeedscaling;
+        matter.minus(tickspeedcost);
+        tickspeedcost.times(tickspeedscaling);
     }
     
     
@@ -91,7 +98,7 @@ window.onload = function() {
      function tick() {
          Update();
          ts = CalcTickspeed()
-         if(m1.count.toString()!='0'){matter += ts * (m1.count * m1.mult)/(1000/game_speed);}
+         if(m1.count.toString()!='0'){Decimal.add(matter, (ts * (m1.count * m1.mult)/(1000/game_speed)).toString());}
          if(m2.count.toString()!='0'){m1.count += ts * (m2.count * m2.mult)/(1000/game_speed);}
          if(m3.count.toString()!='0'){m2.count += ts * (m3.count * m3.mult)/(1000/game_speed);}
          if(m4.count.toString()!='0'){m3.count += ts * (m4.count * m4.mult)/(1000/game_speed);}
@@ -111,7 +118,8 @@ window.onload = function() {
     <button class="matdimbutton"id="m1" type="button" onclick="Trypurchase(m1)"><span id="m1start" style="float:left;">test412</span><span id="m1costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m2"type="button" onclick="Trypurchase(m2)"><span id="m2start" style="float:left;">test412</span><span id="m2costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m3"type="button" onclick="Trypurchase(m3)"><span id="m3start" style="float:left;">test412</span><span id="m3costsect" style="float:right;">test</span></button> <br>
-    <button class="matdimbutton"id="m4"type="button" onclick="Trypurchase(m4)" ><span id="m4start" style="float:left;">test412</span><span id="m4costsect" style="float:right;">test</span></button> 
+    <button class="matdimbutton"id="m4"type="button" onclick="Trypurchase(m4)" ><span id="m4start" style="float:left;">test412</span><span id="m4costsect" style="float:right;">test</span></button><br>
+    <button type="button" onclick="Test()" >test</button>  
 
 </body>
 </html> 

@@ -10,7 +10,7 @@ var buymult = new Decimal(2);
 var m1count = new Decimal(0);
 var m1mult = new Decimal(1);
 var m1cost = new Decimal(1);
-var m1scaling = new Decimal(1);
+var m1scaling = new Decimal(1000);
 var m2count = new Decimal(0);
 var m2mult = new Decimal(0.5);
 var m2cost = new Decimal(10);
@@ -39,7 +39,7 @@ var m4 = new MatterDim(m4mult, m4cost, m4scaling);
 
 
 function Update() {
-    if (matter > Decimal(100000)){
+    if (matter > 100000){
     document.getElementById('numbdisp').innerHTML = matter.toExponential(2).toString().replace('+', '');}
     else{
         document.getElementById('numbdisp').innerHTML = matter.toFixed(0);

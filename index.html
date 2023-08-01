@@ -68,7 +68,6 @@ function Trypurchase(dim) {
     }}
 function UpgradeTickspeed(max = false){
     if(matter.gte(tickspeedcost)){
-        alert(tickspeedcost)
         tickspeedupgrades += 1;
         matter = matter.minus(tickspeedcost);
         tickspeedcost = tickspeedcost.times(tickspeedscaling);

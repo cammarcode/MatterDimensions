@@ -60,14 +60,14 @@ function Update() {
     
 }
 function Trypurchase(dim) {
-    if (matter >= dim.cost){
+    if (matter.gte(dim.cost)){
         matter = matter.minus(dim.cost);
         dim.count = Decimal.add(dim.count, new Decimal(1));
         dim.mult = dim.mult.times(buymult);
         dim.cost = dim.cost.times(dim.scaling);
     }}
 function UpgradeTickspeed(max = false){
-    if(matter >= tickspeedcost){
+    if(matter.gte(tickspeedcost)){
         alert(tickspeedcost)
         tickspeedupgrades += 1;
         matter = matter.minus(tickspeedcost);

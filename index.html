@@ -4,12 +4,12 @@
     <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2/dist/break_infinity.js"></script>
 <script src="matterdims.js"></script>
 <script>
-var game_speed = 200
-var matter = new Decimal("1e+350");
+var game_speed = 250
+var matter = new Decimal("1");
 var buymult = new Decimal("2")
-var m1mult = new Decimal("1e+350");
-var m1cost = new Decimal("1e+350");
-var m1scaling = new Decimal("100000000000000");
+var m1mult = new Decimal("0.5");
+var m1cost = new Decimal("1");
+var m1scaling = new Decimal("1000");
 var m2count = new Decimal("0");
 var m2mult = new Decimal("0.5");
 var m2cost = new Decimal("10");
@@ -23,15 +23,8 @@ var m4mult = new Decimal("0.5");
 var m4cost = new Decimal('1000000');
 var m4scaling = new Decimal('1000000');
 
-var test = new Decimal("1e+400")
 
-function Test(){
-    alert(test)
-}
-
-
-
-var tickspeedmult = new Decimal(1.1);
+var tickspeedmult = new Decimal(1.2);
 var tickspeedupgrades = 0;
 var tickspeedscaling = new Decimal(10);
 var tickspeedcost = new Decimal(100);
@@ -56,7 +49,7 @@ function Update() {
 
     document.getElementById('tickstart').innerHTML = 'Tickspeed: '+((ts < 100000) ? ts.toFixed(1) : ts.toExponential(2).toString().replace('+', '')) + ' ticks per second';
     document.getElementById('tickcostsect').innerHTML =  'Cost: '+((tickspeedcost < 100000) ? tickspeedcost.toFixed(0) : tickspeedcost.toExponential(2).toString().replace('+', '')) + ' Matter'
-    document.getElementById('m1start').innerHTML = 'x'+((m1.mult < 100000) ? m1.mult.toFixed(1) : m1.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp1st Matter Dimension: '+ ((m1.count.toString() != '0') ? ((m1.count < 100000) ? m1.count : m1.count.toExponential(2).toString().replace('+', '')) : '0');
+    document.getElementById('m1start').innerHTML = 'x'+((m1.mult < 100000) ? m1.mult.toFixed(1) : m1.mult.toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp1st Matter Dimension: '+ ((m1.count.toString() != '0') ? ((m1.count < 100000) ? m1.count.toFixed(0) : m1.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m1costsect').innerHTML =  'Cost: '+((m1.cost < 100000) ? m1.cost.toFixed(0) : m1.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
     document.getElementById('m2start').innerHTML = 'x'+((m2.mult < 100000) ? m2.mult.toFixed(1) : m2.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp2nd Matter Dimension: '+ ((m2.count.toString() != '0') ? ((m2.count < 100000) ? m2.count.toFixed(0) : m2.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m2costsect').innerHTML =  'Cost: '+((m2.cost < 100000) ? m2.cost.toFixed(0) : m2.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
@@ -69,15 +62,16 @@ function Update() {
 function Trypurchase(dim) {
     if (matter >= dim.cost){
         matter = matter.minus(dim.cost);
-        dim.count = dim.count.add(new Decimal(1));
+        dim.count = Decimal.add(dim.count, new Decimal(1));
         dim.mult = dim.mult.times(buymult);
         dim.cost = dim.cost.times(dim.scaling);
     }}
 function UpgradeTickspeed(max = false){
     if(matter >= tickspeedcost){
+        alert(tickspeedcost)
         tickspeedupgrades += 1;
-        matter.minus(tickspeedcost);
-        tickspeedcost.times(tickspeedscaling);
+        matter = matter.minus(tickspeedcost);
+        tickspeedcost = tickspeedcost.times(tickspeedscaling);
     }
     
     
@@ -98,10 +92,10 @@ window.onload = function() {
      function tick() {
          Update();
          ts = CalcTickspeed()
-         if(m1.count.toString()!='0'){Decimal.add(matter, (ts.times(m1.count.times(m1.mult)).div(1000/game_speed)));}
-         if(m2.count.toString()!='0'){m1.count += ts * (m2.count * m2.mult)/(1000/game_speed);}
-         if(m3.count.toString()!='0'){m2.count += ts * (m3.count * m3.mult)/(1000/game_speed);}
-         if(m4.count.toString()!='0'){m3.count += ts * (m4.count * m4.mult)/(1000/game_speed);}
+         if(m1.count.toString()!='0'){matter = Decimal.add(matter, (ts.times(m1.count.times(m1.mult)).div(1000/game_speed)));}
+         if(m2.count.toString()!='0'){m1.count = Decimal.add(m1.count, (ts.times(m2.count.times(m2.mult)).div(1000/game_speed)));}
+         if(m3.count.toString()!='0'){m2.count = Decimal.add(m2.count, (ts.times(m3.count.times(m3.mult)).div(1000/game_speed)));}
+         if(m4.count.toString()!='0'){m3.count = Decimal.add(m3.count, (ts.times(m4.count.times(m4.mult)).div(1000/game_speed)));}
          
      }
      setInterval(tick, game_speed);
@@ -119,7 +113,6 @@ window.onload = function() {
     <button class="matdimbutton"id="m2"type="button" onclick="Trypurchase(m2)"><span id="m2start" style="float:left;">test412</span><span id="m2costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m3"type="button" onclick="Trypurchase(m3)"><span id="m3start" style="float:left;">test412</span><span id="m3costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m4"type="button" onclick="Trypurchase(m4)" ><span id="m4start" style="float:left;">test412</span><span id="m4costsect" style="float:right;">test</span></button><br>
-    <button type="button" onclick="Test()" >test</button>  
 
 </body>
 </html> 

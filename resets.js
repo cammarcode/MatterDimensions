@@ -1,6 +1,5 @@
 
-    var head = document.getElementsByTagName('head')[0];
-    document.write('<script src="myscript.js" type="text/javascript"></script>');
+
 
 function DimBoostReset(dbdim = 4){
     console.log('started')

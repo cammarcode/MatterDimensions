@@ -14,6 +14,12 @@ function dimsload(){
         [dbmult, dbcount, dbscaling, dbcost, galaxyadd, galaxycount, galaxyscaling, galaxycost] = (localStorage.getItem('dimboosts').split(',')).map(ToDecimal);
         [tickspeedupgrades, dbdim] = (localStorage.getItem('nondecimal').split(',')).map(ToInteger);
         console.log(typeof(dbcost), dbcost)
+        if (galaxycount == null){
+            var galaxyadd = new Decimal(0.02);
+            var galaxycount = new Decimal("0");
+            var galaxyscaling = new Decimal(6);
+            var galaxycost = new Decimal(8);
+        }
         
     }
 }

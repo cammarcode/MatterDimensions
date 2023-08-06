@@ -54,5 +54,22 @@ body {
     display:initial;
     padding:6px;
     background-color:rgb(142, 182, 78);
+    height: 160px;
 }
 #dimb:hover{background-color: rgb(186, 252, 177);}
+
+#galaxy{
+    width: 18%;
+    font-size: large;
+    margin: auto;
+    margin-top: -160px;
+    position: relative;
+    right: 30%;
+    text-align: center;
+    display:initial;
+    padding:6px;
+    background-color:rgb(78, 175, 182);
+    float: right;
+    height: 160px;
+}
+#galaxy:hover{background-color: rgb(146, 211, 219);}

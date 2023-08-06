@@ -42,16 +42,21 @@ var m8scaling = new Decimal('1e+16');
 var m8count = new Decimal('0');
 
 
-var tickspeedmult = new Decimal(1.1);
+var tickspeedmult = new Decimal(1.125);
 var tickspeedupgrades = 0;
 var tickspeedscaling = new Decimal(10);
 var tickspeedcost = new Decimal(100);
 
 var dbmult = new Decimal("2")
 var dbcount = new Decimal("0")
-var dbscaling = new Decimal("3")
+var dbscaling = new Decimal("2")
 var dbcost = new Decimal('2')
 var dbdim = 0
+
+var galaxyadd = new Decimal(0.02);
+var galaxycount = new Decimal("0");
+var galaxyscaling = new Decimal(6);
+var galaxycost = new Decimal(8);
 
 
 var zerbo = new Decimal("0")
@@ -72,9 +77,9 @@ var dbdims = [m4, m5, m6, m7, m8];
 
 function Update() {
     if (matter > 100000){
-    document.getElementById('numbdisp').innerHTML = matter.toExponential(2).toString().replace('+', '');}
+    document.getElementById('numbmid').innerHTML = matter.toExponential(2).toString().replace('+', '')}
     else{
-        document.getElementById('numbdisp').innerHTML = matter.toFixed(0);
+        document.getElementById('numbmid').innerHTML = matter.toFixed(0);
     }
 
     ts = CalcTickspeed()
@@ -102,6 +107,9 @@ function Update() {
     if(dbdim < 4){document.getElementById('dimbextra').innerHTML =  "<br> And unlock a new dimension <br>"} else{document.getElementById('dimbextra').innerHTML =  ""}
     document.getElementById('dimbcostsect').innerHTML =  'Cost: '+((dbcost < 100000) ? dbcost.toFixed(0) : dbcost.toExponential(2).toString().replace('+', '')) + ' ' + (dbdim+4) +'th Matter Dimension'
     
+    document.getElementById('galstart').innerHTML =  "Purchase a Matter Galaxy to increase tickspeed upgrades by " + ((galaxyadd < 100000) ? galaxyadd.toFixed(3) : galaxyadd.toExponential(2).toString().replace('+', ''))
+    document.getElementById('galextra').innerHTML =  "You have: " + galaxycount + ' Galaxies'
+    document.getElementById('galcostsect').innerHTML =  'Cost: '+((galaxycost < 100000) ? galaxycost.toFixed(0) : galaxycost.toExponential(2).toString().replace('+', '')) + ' 8th Matter Dimension'
 }
 function Trypurchase(dim) {
     if (matter.gte(dim.cost)){
@@ -135,13 +143,23 @@ function BuyDB(){
     dbdims = [m4, m5, m6, m7, m8]
     dim = dbdims[dbdim]
     if(dim.count.gte(dbcost)){
-    if(dbdim == 0){document.getElementById('m5').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult);add=true; dbcost = dbcost.add(1)}
-    if(dbdim == 1){document.getElementById('m6').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); add=true;}
-    if(dbdim == 2){document.getElementById('m7').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); m6.mult = m6.mult.times(dbmult); add=true;}
-    if(dbdim == 3){document.getElementById('m8').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); m6.mult = m6.mult.times(dbmult); m7.mult = m7.mult.times(dbmult); add=true;}
-    if(dbdim == 4){m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); m6.mult = m6.mult.times(dbmult); m7.mult = m7.mult.times(dbmult); m8.mult = m8.mult.times(dbmult); dbcost= dbcost.add(dbscaling)}
+    if(dbdim == 0){document.getElementById('m5').style.display = "initial";  add=true;}
+    if(dbdim == 1){document.getElementById('m6').style.display = "initial";  add=true;}
+    if(dbdim == 2){document.getElementById('m7').style.display = "initial";  add=true;}
+    if(dbdim == 3){document.getElementById('m8').style.display = "initial";  add=true;}
+    if(dbdim == 4){dbcost= dbcost.add(dbscaling)}
     if(add == true){dbdim += 1}
+    dbcount = dbcount.add(1)
     DimBoostReset(dbdim)
+    }
+}
+
+function BuyGalaxy(){
+    if (m8.count.gte(galaxycost)){
+        galaxycount = galaxycount.add(1);
+        galaxycost = galaxycost.add(galaxyscaling);
+        tickspeedmult = tickspeedmult.add(0.02);
+        GalaxyReset()
     }
 }
 
@@ -180,9 +198,10 @@ window.onload = function() {
 </head>
 <body>
     <title>Matter Dimensions</title>
-    <h2 id="numbdisp" >0</h2>
+    <h2 id="numbdisp" ><span id="numbstart" style="font-size: medium;">You have &nbsp;</span><span id="numbmid">test</span><span id="numbend" style="font-size: medium;">&nbsp; matter</span></h2>
     <br><br>
     <button class="matdimbutton"id="tickspeed" type="button" onclick="UpgradeTickspeed()"><span id="tickstart" style="float:left;">test412</span><span id="tickcostsect" style="float:right;">test</span></button> <br><br>
+    <p id = "tickspeedinfo"></p>
     <button class="matdimbutton"id="m1" type="button" onclick="Trypurchase(m1)"><span id="m1start" style="float:left;">test412</span><span id="m1costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m2"type="button" onclick="Trypurchase(m2)"><span id="m2start" style="float:left;">test412</span><span id="m2costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m3"type="button" onclick="Trypurchase(m3)"><span id="m3start" style="float:left;">test412</span><span id="m3costsect" style="float:right;">test</span></button> <br>
@@ -193,5 +212,7 @@ window.onload = function() {
     <button class="matdimbutton"id="m8"type="button" onclick="Trypurchase(m8)" ><span id="m8start" style="float:left;">test412</span><span id="m8costsect" style="float:right;">test</span></button><br>
 
     <button id="dimb"type="button" onclick="BuyDB()" ><span id="dimbstart">Perform a Dimension Boost for a 3x multiplier on all dimensions</span><br><span id="dimbextra">And unlock a new dimension</span><br><span id="dimbcostsect">Cost: 3 4th Dimensions</span></button><br>
+    <button id="galaxy"type="button" onclick="BuyGalaxy()" ><span id="galstart">Perform a Dimension Boost for a 3x multiplier on all dimensions</span><br><br><span id="galextra">And unlock a new dimension</span><br><br><span id="galcostsect">Cost: 3 4th Dimensions</span></button><br>
+
 </body>
 </html> 

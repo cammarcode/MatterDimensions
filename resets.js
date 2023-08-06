@@ -36,18 +36,27 @@ function DimBoostReset(dbdim = 4){
     var m8scaling = new Decimal('1e+16');
     var m8count = new Decimal('0');
 
-    tickspeedmult = new Decimal(1.1);
     tickspeedupgrades = 0;
     tickspeedscaling = new Decimal(10);
     tickspeedcost = new Decimal(100);
 
-    m1 = new MatterDim(m1mult.times(dbmult.pow(dbcount+1)), m1cost, m1scaling, zerbo);
-    m2 = new MatterDim(m2mult.times(dbmult.pow(dbcount+1)), m2cost, m2scaling, zerbo);
-    m3 = new MatterDim(m3mult.times(dbmult.pow(dbcount+1)), m3cost, m3scaling, zerbo);
-    m4 = new MatterDim(m4mult.times(dbmult.pow(dbcount+1)), m4cost, m4scaling, zerbo);
-    m5 = new MatterDim(m5mult.times(dbmult.pow(dbcount)), m5cost, m5scaling, zerbo);
-    m6 = new MatterDim(m6mult.times(dbmult.pow(dbcount-1)), m6cost, m6scaling, zerbo);
-    m7 = new MatterDim(m7mult.times(dbmult.pow(dbcount-2)), m7cost, m7scaling, zerbo);
-    m8 = new MatterDim(m8mult.times(dbmult.pow(dbcount-3)), m8cost, m8scaling, zerbo);
+    m1 = new MatterDim(m1mult.times(dbmult.pow(dbcount)), m1cost, m1scaling, zerbo);
+    m2 = new MatterDim(m2mult.times(dbmult.pow(dbcount)), m2cost, m2scaling, zerbo);
+    m3 = new MatterDim(m3mult.times(dbmult.pow(dbcount)), m3cost, m3scaling, zerbo);
+    m4 = new MatterDim(m4mult.times(dbmult.pow(dbcount)), m4cost, m4scaling, zerbo);
+    m5 = new MatterDim(m5mult.times(dbmult.pow(dbcount.minus(1))), m5cost, m5scaling, zerbo);
+    m6 = new MatterDim(m6mult.times(dbmult.pow(dbcount.minus(2))), m6cost, m6scaling, zerbo);
+    m7 = new MatterDim(m7mult.times(dbmult.pow(dbcount.minus(3))), m7cost, m7scaling, zerbo);
+    m8 = new MatterDim(m8mult.times(dbmult.pow(dbcount.minus(4))), m8cost, m8scaling, zerbo);
     console.log('done');
+}
+
+function GalaxyReset(){
+    dbcount = new Decimal("0")
+    dbdim = 0
+    DimBoostReset()
+    document.getElementById('m5').style.display = "none";
+    document.getElementById('m6').style.display = "none";
+    document.getElementById('m7').style.display = "none";
+    document.getElementById('m8').style.display = "none";
 }

@@ -6,11 +6,10 @@
 <script>
 var game_speed = 200
 var matter = new Decimal("1e+350");
-var buymult = new Decimal("2");
-var m1count = new Decimal("0");
-var m1mult = new Decimal("1");
-var m1cost = new Decimal("1");
-var m1scaling = new Decimal("1000");
+var buymult = new Decimal("2")
+var m1mult = new Decimal("1e+350");
+var m1cost = new Decimal("1e+350");
+var m1scaling = new Decimal("100000000000000");
 var m2count = new Decimal("0");
 var m2mult = new Decimal("0.5");
 var m2cost = new Decimal("10");
@@ -36,12 +35,13 @@ var tickspeedmult = new Decimal(1.1);
 var tickspeedupgrades = 0;
 var tickspeedscaling = new Decimal(10);
 var tickspeedcost = new Decimal(100);
+var zerbo = new Decimal("0")
 
 
-var m1 = new MatterDim(m1mult, m1cost, m1scaling);
-var m2 = new MatterDim(m2mult, m2cost, m2scaling);
-var m3 = new MatterDim(m3mult, m3cost, m3scaling);
-var m4 = new MatterDim(m4mult, m4cost, m4scaling);
+var m1 = new MatterDim(m1mult, m1cost, m1scaling, zerbo);
+var m2 = new MatterDim(m2mult, m2cost, m2scaling, zerbo);
+var m3 = new MatterDim(m3mult, m3cost, m3scaling, zerbo);
+var m4 = new MatterDim(m4mult, m4cost, m4scaling, zerbo);
 
 
 
@@ -56,22 +56,22 @@ function Update() {
 
     document.getElementById('tickstart').innerHTML = 'Tickspeed: '+((ts < 100000) ? ts.toFixed(1) : ts.toExponential(2).toString().replace('+', '')) + ' ticks per second';
     document.getElementById('tickcostsect').innerHTML =  'Cost: '+((tickspeedcost < 100000) ? tickspeedcost.toFixed(0) : tickspeedcost.toExponential(2).toString().replace('+', '')) + ' Matter'
-    document.getElementById('m1start').innerHTML = 'x'+((m1.mult < 100000) ? m1.mult.toFixed(1) : m1.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp1st Matter Dimension: '+ ((m1.count < 100000) ? m1.count.toFixed(0) : m1.count.toExponential(2).toString().replace('+', ''));
+    document.getElementById('m1start').innerHTML = 'x'+((m1.mult < 100000) ? m1.mult.toFixed(1) : m1.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp1st Matter Dimension: '+ ((m1.count.toString() != '0') ? ((m1.count < 100000) ? m1.count : m1.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m1costsect').innerHTML =  'Cost: '+((m1.cost < 100000) ? m1.cost.toFixed(0) : m1.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
-    document.getElementById('m2start').innerHTML = 'x'+((m2.mult < 100000) ? m2.mult.toFixed(1) : m2.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp2nd Matter Dimension: '+ ((m2.count < 100000) ? m2.count.toFixed(0) : m2.count.toExponential(2).toString().replace('+', ''));
+    document.getElementById('m2start').innerHTML = 'x'+((m2.mult < 100000) ? m2.mult.toFixed(1) : m2.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp2nd Matter Dimension: '+ ((m2.count.toString() != '0') ? ((m2.count < 100000) ? m2.count.toFixed(0) : m2.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m2costsect').innerHTML =  'Cost: '+((m2.cost < 100000) ? m2.cost.toFixed(0) : m2.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
-    document.getElementById('m3start').innerHTML = 'x'+((m3.mult < 100000) ? m3.mult.toFixed(1) : m3.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp3rd Matter Dimension: '+ ((m3.count < 100000) ? m3.count.toFixed(0) : m3.count.toExponential(2).toString().replace('+', ''));
+    document.getElementById('m3start').innerHTML = 'x'+((m3.mult < 100000) ? m3.mult.toFixed(1) : m3.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp3rd Matter Dimension: '+ ((m3.count.toString() != '0') ? ((m3.count < 100000) ? m3.count.toFixed(0) : m3.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m3costsect').innerHTML =  'Cost: '+((m3.cost < 100000) ? m3.cost.toFixed(0) : m3.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
-    document.getElementById('m4start').innerHTML = 'x'+((m4.mult < 100000) ? m4.mult.toFixed(1) : m4.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp4th Matter Dimension: '+ ((m4.count < 100000) ? m4.count.toFixed(0) : m4.count.toExponential(2).toString().replace('+', ''));
+    document.getElementById('m4start').innerHTML = 'x'+((m4.mult < 100000) ? m4.mult.toFixed(1) : m4.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp4th Matter Dimension: '+ ((m4.count.toString() != '0') ? ((m4.count < 100000) ? m4.count.toFixed(0) : m4.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m4costsect').innerHTML =  'Cost: '+((m4.cost < 100000) ? m4.cost.toFixed(0) : m4.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
     
 }
 function Trypurchase(dim) {
     if (matter >= dim.cost){
         matter = matter.minus(dim.cost);
-        dim.count = dim.count + 1;
-        dim.mult *= buymult;
-        dim.cost *= dim.scaling
+        dim.count = dim.count.add(new Decimal(1));
+        dim.mult = dim.mult.times(buymult);
+        dim.cost = dim.cost.times(dim.scaling);
     }}
 function UpgradeTickspeed(max = false){
     if(matter >= tickspeedcost){
@@ -89,7 +89,7 @@ function CalcTickspeed(){
     return tickspeedmult.pow(tickspeedupgrades);}
     else{
         
-        return 1
+        return new Decimal(1)
     }
 }
 
@@ -98,7 +98,7 @@ window.onload = function() {
      function tick() {
          Update();
          ts = CalcTickspeed()
-         if(m1.count.toString()!='0'){Decimal.add(matter, (ts * (m1.count * m1.mult)/(1000/game_speed)).toString());}
+         if(m1.count.toString()!='0'){Decimal.add(matter, (ts.times(m1.count.times(m1.mult)).div(1000/game_speed)));}
          if(m2.count.toString()!='0'){m1.count += ts * (m2.count * m2.mult)/(1000/game_speed);}
          if(m3.count.toString()!='0'){m2.count += ts * (m3.count * m3.mult)/(1000/game_speed);}
          if(m4.count.toString()!='0'){m3.count += ts * (m4.count * m4.mult)/(1000/game_speed);}

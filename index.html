@@ -2,6 +2,7 @@
 <html>
 <head>
     <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2/dist/break_infinity.js"></script>
+<script src="resets.js"></script>
 <script src="matterdims.js"></script>
 <script>
 var game_speed = 200
@@ -20,7 +21,7 @@ var m3cost = new Decimal("100");
 var m3scaling = new Decimal("100000");
 var m4count = new Decimal('0');
 var m4mult = new Decimal("0.5");
-var m4cost = new Decimal('1e+7');
+var m4cost = new Decimal('1e+5');
 var m4scaling = new Decimal('1000000');
 var m5mult = new Decimal("0.5");
 var m5cost = new Decimal('1e+11');
@@ -40,15 +41,15 @@ var m8scaling = new Decimal('1e+16');
 var m8count = new Decimal('0');
 
 
-var tickspeedmult = new Decimal(1.2);
+var tickspeedmult = new Decimal(1.1);
 var tickspeedupgrades = 0;
 var tickspeedscaling = new Decimal(10);
 var tickspeedcost = new Decimal(100);
 
-var dbmult = new Decimal(4)
+var dbmult = new Decimal(2)
 var dbcount = new Decimal("0")
 var dbscaling = new Decimal("3")
-var dbcost = new Decimal('3')
+var dbcost = new Decimal('2')
 var dbdim = 0
 
 
@@ -64,7 +65,7 @@ var m6 = new MatterDim(m6mult, m6cost, m6scaling, zerbo);
 var m7 = new MatterDim(m7mult, m7cost, m7scaling, zerbo);
 var m8 = new MatterDim(m8mult, m8cost, m8scaling, zerbo);
 
-const dbdims = [m4, m5, m6, m7, m8];
+var dbdims = [m4, m5, m6, m7, m8];
 
 
 
@@ -130,14 +131,16 @@ function CalcTickspeed(){
 var add = false
 function BuyDB(){
     add = false
+    dbdims = [m4, m5, m6, m7, m8]
     dim = dbdims[dbdim]
     if(dim.count.gte(dbcost)){
-    if(dbdim == 0){document.getElementById('m5').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult);add=true;}
+    if(dbdim == 0){document.getElementById('m5').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult);add=true; dbcost = dbcost.add(1)}
     if(dbdim == 1){document.getElementById('m6').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); add=true;}
     if(dbdim == 2){document.getElementById('m7').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); m6.mult = m6.mult.times(dbmult); add=true;}
     if(dbdim == 3){document.getElementById('m8').style.display = "initial"; m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); m6.mult = m6.mult.times(dbmult); m7.mult = m7.mult.times(dbmult); add=true;}
     if(dbdim == 4){m1.mult = m1.mult.times(dbmult); m2.mult = m2.mult.times(dbmult); m3.mult = m3.mult.times(dbmult); m4.mult = m4.mult.times(dbmult); m5.mult = m5.mult.times(dbmult); m6.mult = m6.mult.times(dbmult); m7.mult = m7.mult.times(dbmult); m8.mult = m8.mult.times(dbmult); dbcost= dbcost.add(dbscaling)}
-    if(add == true){dbdim += 1}    
+    if(add == true){dbdim += 1}
+    DimBoostReset(dbdim)
     }
 }
 

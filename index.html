@@ -120,12 +120,12 @@ function Trypurchase(dim, max=false) {
     if (matter.gte(dim.cost)){
         if(max == false){
         matter = matter.minus(dim.cost);
-        dim.count = Decimal.add(dim.count, new Decimal(1000000));
+        dim.count = Decimal.add(dim.count, new Decimal(1));
         dim.mult = dim.mult.times(buymult);
         dim.cost = dim.cost.times(dim.scaling);}
         else{while(matter.gte(dim.cost)){
             matter = matter.minus(dim.cost);
-        dim.count = Decimal.add(dim.count, new Decimal(1000000));
+        dim.count = Decimal.add(dim.count, new Decimal(1));
         dim.mult = dim.mult.times(buymult);
         dim.cost = dim.cost.times(dim.scaling);}
         }
@@ -181,7 +181,7 @@ function BuyGalaxy(){
         tickspeedmult = tickspeedmult.add(0.02);
         GalaxyReset()
     }
-}
+} 
 
 var infbroken = false
 

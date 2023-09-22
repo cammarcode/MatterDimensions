@@ -18,27 +18,27 @@ var m2cost = new Decimal("10");
 var m2scaling = new Decimal("10000");
 var m3count = new Decimal("0");
 var m3mult = new Decimal("0.5");
-var m3cost = new Decimal("100");
+var m3cost = new Decimal("1000");
 var m3scaling = new Decimal("100000");
 var m4count = new Decimal('0');
 var m4mult = new Decimal("0.5");
 var m4cost = new Decimal('1e+5');
 var m4scaling = new Decimal('1000000');
 var m5mult = new Decimal("0.5");
-var m5cost = new Decimal('1e+11');
-var m5scaling = new Decimal('1e+9');
+var m5cost = new Decimal('1e+9');
+var m5scaling = new Decimal('1e+8');
 var m5count = new Decimal('0');
 var m6mult = new Decimal("0.5");
-var m6cost = new Decimal('1e+17');
-var m6scaling = new Decimal('1e+11');
+var m6cost = new Decimal('1e+13');
+var m6scaling = new Decimal('1e+10');
 var m6count = new Decimal('0');
 var m7mult = new Decimal("0.5");
-var m7cost = new Decimal('1e+26');
-var m7scaling = new Decimal('1e+13');
+var m7cost = new Decimal('1e+18');
+var m7scaling = new Decimal('1e+12');
 var m7count = new Decimal('0');
 var m8mult = new Decimal("0.5");
-var m8cost = new Decimal('1e+38');
-var m8scaling = new Decimal('1e+16');
+var m8cost = new Decimal('1e+24');
+var m8scaling = new Decimal('1e+15');
 var m8count = new Decimal('0');
 
 
@@ -58,6 +58,8 @@ var galaxycount = new Decimal("0");
 var galaxyscaling = new Decimal(6);
 var galaxycost = new Decimal(8);
 
+var done = false
+
 
 var zerbo = new Decimal("0")
 
@@ -73,9 +75,12 @@ var m8 = new MatterDim(m8mult, m8cost, m8scaling, zerbo);
 
 var dbdims = [m4, m5, m6, m7, m8];
 
-
+var mdown = false;
 
 function Update() {
+    if(done==true){
+    console.log(typeof(galaxycount), galaxycount)
+    if(mdown == true){Trypurchase(m1, true); Trypurchase(m2, true);Trypurchase(m3, true);Trypurchase(m4, true);if(document.getElementById('m5').style.display == "initial"){Trypurchase(m5, true)};if(document.getElementById('m6').style.display == "initial"){Trypurchase(m6, true)};if(document.getElementById('m7').style.display == "initial"){Trypurchase(m7, true)};if(document.getElementById('m8').style.display == "initial"){Trypurchase(m8, true)};UpgradeTickspeed(true)}
     if (matter > 100000){
     document.getElementById('numbmid').innerHTML = matter.toExponential(2).toString().replace('+', '')}
     else{
@@ -84,7 +89,7 @@ function Update() {
 
     ts = CalcTickspeed()
 
-    document.getElementById('tickstart').innerHTML = 'Tickspeed: '+((ts < 100000) ? ts.toFixed(1) : ts.toExponential(2).toString().replace('+', '')) + ' ticks per second';
+    document.getElementById('tickstart').innerHTML = tickspeedmult + galaxycount + ' Tickspeed: '+((ts < 100000) ? ts.toFixed(1) : ts.toExponential(2).toString().replace('+', '')) + ' ticks per second';
     document.getElementById('tickcostsect').innerHTML =  'Cost: '+((tickspeedcost < 100000) ? tickspeedcost.toFixed(0) : tickspeedcost.toExponential(2).toString().replace('+', '')) + ' Matter'
     document.getElementById('m1start').innerHTML = 'x'+((m1.mult < 100000) ? m1.mult.toFixed(1) : m1.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp1st Matter Dimension: '+ ((m1.count.toString() != '0') ? ((m1.count < 100000) ? m1.count.toFixed(0) : m1.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m1costsect').innerHTML =  'Cost: '+((m1.cost < 100000) ? m1.cost.toFixed(0) : m1.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
@@ -110,19 +115,34 @@ function Update() {
     document.getElementById('galstart').innerHTML =  "Purchase a Matter Galaxy to increase tickspeed upgrades by " + ((galaxyadd < 100000) ? galaxyadd.toFixed(3) : galaxyadd.toExponential(2).toString().replace('+', ''))
     document.getElementById('galextra').innerHTML =  "You have: " + galaxycount + ' Galaxies'
     document.getElementById('galcostsect').innerHTML =  'Cost: '+((galaxycost < 100000) ? galaxycost.toFixed(0) : galaxycost.toExponential(2).toString().replace('+', '')) + ' 8th Matter Dimension'
-}
-function Trypurchase(dim) {
+}}
+function Trypurchase(dim, max=false) {
     if (matter.gte(dim.cost)){
+        if(max == false){
         matter = matter.minus(dim.cost);
-        dim.count = Decimal.add(dim.count, new Decimal(1));
+        dim.count = Decimal.add(dim.count, new Decimal(1000000));
         dim.mult = dim.mult.times(buymult);
-        dim.cost = dim.cost.times(dim.scaling);
+        dim.cost = dim.cost.times(dim.scaling);}
+        else{while(matter.gte(dim.cost)){
+            matter = matter.minus(dim.cost);
+        dim.count = Decimal.add(dim.count, new Decimal(1000000));
+        dim.mult = dim.mult.times(buymult);
+        dim.cost = dim.cost.times(dim.scaling);}
+        }
     }}
 function UpgradeTickspeed(max = false){
     if(matter.gte(tickspeedcost)){
-        tickspeedupgrades += 1;
+        if (max == true){
+            while(matter.gte(tickspeedcost)){
+                tickspeedupgrades += 1;
         matter = matter.minus(tickspeedcost);
         tickspeedcost = tickspeedcost.times(tickspeedscaling);
+            }
+        }
+        else{
+        tickspeedupgrades += 1;
+        matter = matter.minus(tickspeedcost);
+        tickspeedcost = tickspeedcost.times(tickspeedscaling);}
     }
     
     
@@ -163,6 +183,8 @@ function BuyGalaxy(){
     }
 }
 
+var infbroken = false
+
 window.onload = function() {     
     document.getElementById('m5').style.display = "none";
     document.getElementById('m6').style.display = "none";
@@ -176,15 +198,16 @@ window.onload = function() {
      function tick() {
          Update();
          ts = CalcTickspeed()
-         if(m1.count.toString()!='0'){matter = Decimal.add(matter, (ts.times(m1.count.times(m1.mult)).div(1000/game_speed)));}
-         if(m2.count.toString()!='0'){m1.count = Decimal.add(m1.count, (ts.times(m2.count.times(m2.mult)).div(1000/game_speed)));}
-         if(m3.count.toString()!='0'){m2.count = Decimal.add(m2.count, (ts.times(m3.count.times(m3.mult)).div(1000/game_speed)));}
-         if(m4.count.toString()!='0'){m3.count = Decimal.add(m3.count, (ts.times(m4.count.times(m4.mult)).div(1000/game_speed)));}
-         if(m5.count.toString()!='0'){m4.count = Decimal.add(m4.count, (ts.times(m5.count.times(m5.mult)).div(1000/game_speed)));}
-         if(m6.count.toString()!='0'){m5.count = Decimal.add(m5.count, (ts.times(m6.count.times(m6.mult)).div(1000/game_speed)));}
-         if(m7.count.toString()!='0'){m6.count = Decimal.add(m6.count, (ts.times(m7.count.times(m7.mult)).div(1000/game_speed)));}
-         if(m8.count.toString()!='0'){m7.count = Decimal.add(m7.count, (ts.times(m8.count.times(m8.mult)).div(1000/game_speed)));}
-         
+         if (matter.lte(new Decimal("1.8e3000008")) || infbroken == true){
+            if(m1.count.toString()!='0'){matter = Decimal.add(matter, (ts.times(m1.count.times(m1.mult)).div(1000/game_speed)));}
+            if(m2.count.toString()!='0'){m1.count = Decimal.add(m1.count, (ts.times(m2.count.times(m2.mult)).div(1000/game_speed)));}
+            if(m3.count.toString()!='0'){m2.count = Decimal.add(m2.count, (ts.times(m3.count.times(m3.mult)).div(1000/game_speed)));}
+            if(m4.count.toString()!='0'){m3.count = Decimal.add(m3.count, (ts.times(m4.count.times(m4.mult)).div(1000/game_speed)));}
+            if(m5.count.toString()!='0'){m4.count = Decimal.add(m4.count, (ts.times(m5.count.times(m5.mult)).div(1000/game_speed)));}
+            if(m6.count.toString()!='0'){m5.count = Decimal.add(m5.count, (ts.times(m6.count.times(m6.mult)).div(1000/game_speed)));}
+            if(m7.count.toString()!='0'){m6.count = Decimal.add(m6.count, (ts.times(m7.count.times(m7.mult)).div(1000/game_speed)));}
+            if(m8.count.toString()!='0'){m7.count = Decimal.add(m7.count, (ts.times(m8.count.times(m8.mult)).div(1000/game_speed)));}
+         }
      }
      function save(){
         dimssave()
@@ -192,12 +215,35 @@ window.onload = function() {
      setInterval(tick, game_speed);
      setInterval(save, 10000);
  }
+
+function keydownFunction(){
+    if (event.key == "m"){mdown = true}
+    if (event.key == "d"){BuyDB()}
+    if (event.key == "g"){BuyGalaxy()}
+ }
+
+ function keyupFunction(){
+    if (event.key == "m"){mdown = false}
+ }
+
 </script>
 
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onkeydown="keydownFunction()" onkeyup="keyupFunction()">
+    
     <title>Matter Dimensions</title>
+    <ul id="sidebar">
+        <li><a href = "index.html"></a>
+            test
+        </li>
+        <li><a href = "index.html"></a>
+            test
+        </li>
+        <li><a href = "index.html"></a>
+            test
+        </li>
+    </ul>
     <h2 id="numbdisp" ><span id="numbstart" style="font-size: medium;">You have &nbsp;</span><span id="numbmid">test</span><span id="numbend" style="font-size: medium;">&nbsp; matter</span></h2>
     <br><br>
     <button class="matdimbutton"id="tickspeed" type="button" onclick="UpgradeTickspeed()"><span id="tickstart" style="float:left;">test412</span><span id="tickcostsect" style="float:right;">test</span></button> <br><br>

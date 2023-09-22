@@ -73,3 +73,16 @@ body {
     height: 160px;
 }
 #galaxy:hover{background-color: rgb(146, 211, 219);}
+
+#sidebar{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li a {
+    list-style: none;
+    background-color: aliceblue;
+    display: block;
+    width: 60px;
+}

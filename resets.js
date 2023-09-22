@@ -2,7 +2,7 @@
 
 
 function DimBoostReset(dbdim = 4){
-    console.log('started')
+    
     matter = new Decimal("1");
     var m1mult = new Decimal("0.5");
     var m1cost = new Decimal("1");
@@ -48,12 +48,13 @@ function DimBoostReset(dbdim = 4){
     m6 = new MatterDim(m6mult.times(dbmult.pow(dbcount.minus(2))), m6cost, m6scaling, zerbo);
     m7 = new MatterDim(m7mult.times(dbmult.pow(dbcount.minus(3))), m7cost, m7scaling, zerbo);
     m8 = new MatterDim(m8mult.times(dbmult.pow(dbcount.minus(4))), m8cost, m8scaling, zerbo);
-    console.log('done');
+
 }
 
 function GalaxyReset(){
     dbcount = new Decimal("0")
     dbdim = 0
+    dbcost = 2
     DimBoostReset()
     document.getElementById('m5').style.display = "none";
     document.getElementById('m6').style.display = "none";

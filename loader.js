@@ -28,3 +28,7 @@ function dimssave(){
     localStorage.setItem('nondecimal', [tickspeedupgrades, dbdim]);
     localStorage.setItem('dimboosts', [dbmult, dbcount, dbscaling, dbcost, galaxyadd, galaxycount, galaxyscaling, galaxycost]);
 }
+
+function useless(){
+    
+}

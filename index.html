@@ -78,7 +78,7 @@ var dbdims = [m4, m5, m6, m7, m8];
 var mdown = false;
 
 function Update() {
-    if(done==true){
+    
     console.log(typeof(galaxycount), galaxycount)
     if(mdown == true){Trypurchase(m1, true); Trypurchase(m2, true);Trypurchase(m3, true);Trypurchase(m4, true);if(document.getElementById('m5').style.display == "initial"){Trypurchase(m5, true)};if(document.getElementById('m6').style.display == "initial"){Trypurchase(m6, true)};if(document.getElementById('m7').style.display == "initial"){Trypurchase(m7, true)};if(document.getElementById('m8').style.display == "initial"){Trypurchase(m8, true)};UpgradeTickspeed(true)}
     if (matter > 100000){
@@ -89,7 +89,7 @@ function Update() {
 
     ts = CalcTickspeed()
 
-    document.getElementById('tickstart').innerHTML = tickspeedmult + galaxycount + ' Tickspeed: '+((ts < 100000) ? ts.toFixed(1) : ts.toExponential(2).toString().replace('+', '')) + ' ticks per second';
+    document.getElementById('tickstart').innerHTML = ' Tickspeed: '+((ts < 100000) ? ts.toFixed(3) : ts.toExponential(2).toString().replace('+', '')) + ' ticks per second';
     document.getElementById('tickcostsect').innerHTML =  'Cost: '+((tickspeedcost < 100000) ? tickspeedcost.toFixed(0) : tickspeedcost.toExponential(2).toString().replace('+', '')) + ' Matter'
     document.getElementById('m1start').innerHTML = 'x'+((m1.mult < 100000) ? m1.mult.toFixed(1) : m1.mult.toExponential(2).toString().replace('+', '')) + ' &nbsp&nbsp&nbsp&nbsp1st Matter Dimension: '+ ((m1.count.toString() != '0') ? ((m1.count < 100000) ? m1.count.toFixed(0) : m1.count.toExponential(2).toString().replace('+', '')) : '0');
     document.getElementById('m1costsect').innerHTML =  'Cost: '+((m1.cost < 100000) ? m1.cost.toFixed(0) : m1.cost.toExponential(2).toString().replace('+', '')) + ' Matter'
@@ -115,7 +115,7 @@ function Update() {
     document.getElementById('galstart').innerHTML =  "Purchase a Matter Galaxy to increase tickspeed upgrades by " + ((galaxyadd < 100000) ? galaxyadd.toFixed(3) : galaxyadd.toExponential(2).toString().replace('+', ''))
     document.getElementById('galextra').innerHTML =  "You have: " + galaxycount + ' Galaxies'
     document.getElementById('galcostsect').innerHTML =  'Cost: '+((galaxycost < 100000) ? galaxycost.toFixed(0) : galaxycost.toExponential(2).toString().replace('+', '')) + ' 8th Matter Dimension'
-}}
+}
 function Trypurchase(dim, max=false) {
     if (matter.gte(dim.cost)){
         if(max == false){
@@ -150,12 +150,7 @@ function UpgradeTickspeed(max = false){
 }
 
 function CalcTickspeed(){
-    if (tickspeedupgrades > 0){
-    return tickspeedmult.pow(tickspeedupgrades);}
-    else{
-        
-        return new Decimal(1)
-    }
+    return tickspeedmult.pow(tickspeedupgrades);
 }
 var add = false
 function BuyDB(){
@@ -198,7 +193,7 @@ window.onload = function() {
      function tick() {
          Update();
          ts = CalcTickspeed()
-         if (matter.lte(new Decimal("1.8e3000008")) || infbroken == true){
+         if (matter.lte(new Decimal("1.8e308")) || infbroken == true){
             if(m1.count.toString()!='0'){matter = Decimal.add(matter, (ts.times(m1.count.times(m1.mult)).div(1000/game_speed)));}
             if(m2.count.toString()!='0'){m1.count = Decimal.add(m1.count, (ts.times(m2.count.times(m2.mult)).div(1000/game_speed)));}
             if(m3.count.toString()!='0'){m2.count = Decimal.add(m2.count, (ts.times(m3.count.times(m3.mult)).div(1000/game_speed)));}
@@ -233,17 +228,7 @@ function keydownFunction(){
 <body onkeydown="keydownFunction()" onkeyup="keyupFunction()">
     
     <title>Matter Dimensions</title>
-    <ul id="sidebar">
-        <li><a href = "index.html"></a>
-            test
-        </li>
-        <li><a href = "index.html"></a>
-            test
-        </li>
-        <li><a href = "index.html"></a>
-            test
-        </li>
-    </ul>
+    
     <h2 id="numbdisp" ><span id="numbstart" style="font-size: medium;">You have &nbsp;</span><span id="numbmid">test</span><span id="numbend" style="font-size: medium;">&nbsp; matter</span></h2>
     <br><br>
     <button class="matdimbutton"id="tickspeed" type="button" onclick="UpgradeTickspeed()"><span id="tickstart" style="float:left;">test412</span><span id="tickcostsect" style="float:right;">test</span></button> <br><br>
@@ -251,7 +236,7 @@ function keydownFunction(){
     <button class="matdimbutton"id="m1" type="button" onclick="Trypurchase(m1)"><span id="m1start" style="float:left;">test412</span><span id="m1costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m2"type="button" onclick="Trypurchase(m2)"><span id="m2start" style="float:left;">test412</span><span id="m2costsect" style="float:right;">test</span></button> <br>
     <button class="matdimbutton"id="m3"type="button" onclick="Trypurchase(m3)"><span id="m3start" style="float:left;">test412</span><span id="m3costsect" style="float:right;">test</span></button> <br>
-    <button class="matdimbutton"id="m4"type="button" onclick="Trypurchase(m4)" ><span id="m4start" style="float:left;">test412</span><span id="m4costsect" style="float:right;">test</span></button><br>
+    <button class="matdimbutton"id="m4"type="button" onclick="Trypurchase(m4)" ><span id="m4start" style="float:left;">test42</span><span id="m4costsect" style="float:right;">test</span></button><br>
     <button class="matdimbutton"id="m5"type="button" onclick="Trypurchase(m5)" ><span id="m5start" style="float:left;">test412</span><span id="m5costsect" style="float:right;">test</span></button><br>
     <button class="matdimbutton"id="m6"type="button" onclick="Trypurchase(m6)" ><span id="m6start" style="float:left;">test412</span><span id="m6costsect" style="float:right;">test</span></button><br>
     <button class="matdimbutton"id="m7"type="button" onclick="Trypurchase(m7)" ><span id="m7start" style="float:left;">test412</span><span id="m7costsect" style="float:right;">test</span></button><br>
